@@ -5,6 +5,14 @@ This is fablib for gluster.
 
 ## Example vars
 ``` bash
+node_map:
+  gluster:
+    hosts:
+      - dev01.mydns.jp
+      - dev02.mydns.jp
+    fabruns:
+      - openstack/gluster
+
 gluster:
   common:
     volume: common
