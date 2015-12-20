@@ -30,7 +30,7 @@ class Gluster(SimpleBase):
 
         filer.template('/etc/yum.repos.d/glusterfs-epel.repo')
 
-        self.install_packages()
+        self.install_packages('--enablerepo glusterfs-epel')
         self.start_services().enable_services()
 
         filer.mkdir(cluster['brick'])
