@@ -1,9 +1,18 @@
-env:
-  port: 31022
-
 node_map:
-  centos7:
+  cluster1:
     hosts:
-      - localhost
+      - 192.168.122.50
+      - 192.168.122.51
     fabruns:
       - test/base
+
+gluster:
+  clusters:
+    cluster1:
+      hosts: ${#node_map.cluster1.hosts}
+      host: ${#node_map.cluster1.hosts.0}
+      volume_map:
+        sample:
+          name: sample
+          brick: /export/sample
+          replica: 2
