@@ -20,6 +20,7 @@ class Gluster(SimpleBase):
             'CentOS Linux 7.*': [
                 'centos-release-gluster36',
                 'glusterfs-server',
+                'glusterfs-fuse',
             ]
         }
 
@@ -68,3 +69,11 @@ class Gluster(SimpleBase):
             sudo('gluster volume info {0[name]} | grep Started'
                  ' || gluster volume start {0[name]}'.format(
                      volume))
+
+    def mount_local(self):
+        data = self.init()
+        for volume in data['volume_map'].values():
+            filer.Editor('/etc/fstab').a('localhost:/{0} /mnt/{0} glusterfs '
+                                         'defaults,_netdev 0 0'.format(volume['name']))
+            filer.mkdir('/mnt/{0}'.format(volume['name']))
+            sudo('mount -a')
