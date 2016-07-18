@@ -61,11 +61,12 @@ class Gluster(SimpleBase):
 
         for volume in data['volume_map'].values():
             bricks = ''
+            replica_option = 'replica 2' if len(data['hosts']) > 1 else ''
             for host in data['hosts']:
                 bricks += '{0}:{1} '.format(host, volume['brick'])
             sudo('gluster volume info {0[name]} || gluster volume create '
-                 '{0[name]} replica {0[replica]} {1} force'.format(
-                     volume, bricks))
+                 '{0[name]} {1} {2} force'.format(
+                     volume, replica_option, bricks))
             sudo('gluster volume info {0[name]} | grep Started'
                  ' || gluster volume start {0[name]}'.format(
                      volume))
